@@ -1,0 +1,112 @@
+#pragma once
+
+#include "Object/Collector/Referencer.h"
+#include "Templates/Functions.h"
+
+#include "Threading/CriticalSection.h"
+#include "Threading/ScopeLock.h"
+
+#include "Object/Collector/ObjectCollector.h"
+
+#include <type_traits>
+
+class CObject;
+class CObjectLink;
+
+namespace Objects::Properties
+{
+	template<typename TObject = CObject>
+	class TProperty : public CReferencer
+	{
+		static_assert(std::is_base_of_v<CObject, TObject>);
+
+		using Super = CReferencer;
+
+	public:
+		TProperty(CObject* InParent)
+		:	Super(InParent)
+		{
+			//
+		}
+
+		~TProperty() override = default;
+
+		std::nullptr_t operator=(std::nullptr_t)
+		{
+			SetObject(nullptr);
+
+			return nullptr;
+		}
+
+		TObject* operator=(TObject* InOther)
+		{
+			SetObject(InOther);
+
+			return InOther;
+		}
+
+		operator TObject*()
+		{
+			return Object();
+		}
+
+		operator TObject*() const
+		{
+			return Object();
+		}
+
+		TObject* operator->()
+		{
+			return Object();
+		}
+
+		TObject* operator->() const
+		{
+			return Object();
+		}
+
+	private:
+		TObject* _object = nullptr;
+		CObjectLink* _link = nullptr;
+		SCriticalSection _criticalSection;
+
+		inline void SetObject(TObject* InObject)
+		{
+			SScopeLock Lock(_criticalSection);
+
+			GObjectCollector.RemoveObjectLink(_link);
+
+			_object = InObject;
+			_link = GObjectCollector.AddObjectLink(InObject, this);
+		}
+
+		inline TObject* Object() const
+		{
+			SScopeLock Lock(_criticalSection);
+
+			return _object;
+		}
+
+		inline void ReleaseLinks() override
+		{
+			SScopeLock Lock(_criticalSection);
+
+			GObjectCollector.RemoveObjectLink(_link);
+
+			_object = nullptr;
+			_link = nullptr;
+		}
+
+		inline void EnumerateLinks(const TFunction<void (CObjectLink*)>& InFunc) const override
+		{
+			SScopeLock Lock(_criticalSection);
+
+			if (_link != nullptr)
+			{
+				InFunc(_link);
+			}
+		}
+	};
+}
+
+#define PROPERTY(TypeName, Name) Objects::Properties::TProperty< TypeName > Name = this
