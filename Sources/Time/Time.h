@@ -12,4 +12,4 @@ public:
 	CORE_API virtual Double GetTimeInSeconds() const = 0;
 };
 
-extern const CTime& GTime;
+CORE_API extern const CTime& GTime;

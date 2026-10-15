@@ -8,6 +8,8 @@
 
 #include "Logger/Logger.h"
 
+#include <initializer_list>
+
 template<typename TElement>
 class TSet
 {
@@ -17,6 +19,14 @@ public:
     TSet() : _buckets(16, true)
 	{
 
+	}
+
+	TSet(std::initializer_list<TElement> InitList) : TSet()
+	{
+		for (const TElement& Element : InitList)
+		{
+			Insert(Element);
+		}
 	}
 
     ~TSet() = default;

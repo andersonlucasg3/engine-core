@@ -22,6 +22,12 @@ public:
 
 	CORE_API bool IsQueuedForDestruction() const;
 
+	template<typename TOther>
+	bool IsA()
+	{
+		return dynamic_cast<TOther*>(this) != nullptr;
+	}
+
 private:
 	TArray<CReferencer*> _referencers;
 

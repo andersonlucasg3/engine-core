@@ -9,4 +9,4 @@ public:
 	CORE_API virtual SFileRef GetResource(const CString& InResourceName) const = 0;
 };
 
-extern const CResources& GResources;
+CORE_API extern const CResources& GResources;

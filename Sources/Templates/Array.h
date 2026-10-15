@@ -6,6 +6,8 @@
 #include "SmartPointer/MakeAndCasts.h"
 #include "SmartPointer/Deleter.h"
 
+#include "Memory/Memory.h"
+
 template<typename TElement>
 struct SArrayDeleter : public TDeleter<TElement>
 {
@@ -347,10 +349,7 @@ public:
 	TArray<TCast> Cast() const
 	{
 		TArray<TCast> Casted(ItemNum * sizeof(TElement), true);
-		for (UInt32 Index = 0; Index < ItemNum; ++Index)
-		{
-			Casted.SetAt(Index, DataPtr[Index]);
-		}
+		GMemory.Copy(GetData(), Casted.GetData(), Casted.Num());
 		return Casted;
 	}
 

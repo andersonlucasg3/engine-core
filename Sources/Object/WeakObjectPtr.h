@@ -76,12 +76,12 @@ public:
         return _object;
     }
 
-    inline operator bool()
+    inline operator bool() const
     {
         return IsValid();
     }
 
-    inline TObject* operator->()
+    inline TObject* operator->() const
     {
         return _object;
     }
