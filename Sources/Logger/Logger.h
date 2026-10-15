@@ -53,4 +53,4 @@ public:
 	}
 };
 
-CORE_API extern const CLogger& GLogger;
+CORE_API extern CLogger& GLogger;

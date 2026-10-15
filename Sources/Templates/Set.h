@@ -72,11 +72,11 @@ public:
 		return false;
 	}
 
-	bool Contains(const TElement& Element)
+	bool Contains(const TElement& Element) const
 	{
 		SizeT Index = Hash(Element);
 
-		TBucket& Bucket = _buckets[Index];
+		const TBucket& Bucket = _buckets[Index];
 
 		return Bucket.Contains(Element);
 	}
@@ -130,19 +130,19 @@ protected:
 	}
 
     template<typename THashable, std::enable_if_t<std::is_integral_v<THashable> || std::is_enum_v<THashable>, bool> = true>
-    SizeT Hash(const THashable& Hashable) 
+    SizeT Hash(const THashable& Hashable) const
 	{
 		return static_cast<SizeT>(Hashable) % _buckets.Num();
     }
 
 	template<typename THashable, std::enable_if_t<std::is_pointer_v<THashable>, bool> = true>
-	SizeT Hash(THashable Hashable)
+	SizeT Hash(THashable Hashable) const
 	{
 		return reinterpret_cast<SizeT>(Hashable) % _buckets.Num();
 	}
 
     template<typename THashable, std::enable_if_t<std::is_base_of_v<CHashable, THashable>, bool> = true>
-    SizeT Hash(const THashable& Hashable) 
+    SizeT Hash(const THashable& Hashable) const
 	{
         static_assert(std::is_base_of_v<CHashable, THashable>, "THashable type must implement CHashable");
 
@@ -150,13 +150,13 @@ protected:
     }
 
     template<typename TFirst, typename TSecond>
-    SizeT Hash(const std::pair<TFirst, TSecond>& Hashable)
+    SizeT Hash(const std::pair<TFirst, TSecond>& Hashable) const
 	{
 		return (Hash(Hashable.first) * 31 + Hash(Hashable.second)) % _buckets.Num();
 	}
 
 	template<typename TPointer>
-	SizeT Hash(const TSharedPtr<TPointer>& Hashable)
+	SizeT Hash(const TSharedPtr<TPointer>& Hashable) const
 	{
 		return reinterpret_cast<SizeT>(Hashable.Raw()) % _buckets.Num();
 	}

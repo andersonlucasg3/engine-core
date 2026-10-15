@@ -12,8 +12,8 @@
 
 #include COMPILE_PLATFORM_GROUP_HEADER(Logger.h)
 
-static const CPlatformLogger GPlatformLogger;
-const CLogger& GLogger = GPlatformLogger;
+static CPlatformLogger GPlatformLogger;
+CLogger& GLogger = GPlatformLogger;
 
 TArray<std::string> GLogBuffer;
 

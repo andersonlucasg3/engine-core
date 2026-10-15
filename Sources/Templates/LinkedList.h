@@ -181,7 +181,7 @@ public:
         _currentNum = 0;
     }
 
-    inline bool Contains(const TElement& Element)
+    inline bool Contains(const TElement& Element) const
     {
         TNodePtr Current = _head;
 		while (Current != nullptr)
