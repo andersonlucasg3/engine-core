@@ -319,7 +319,8 @@ public:
 			ArrayType NewDataPtr = MakeShareable<TElement, ArrayDeleter>(new TElement[NewSize]);
 			
 			// must use assign so copy operators will be used
-			for (SizeT Index = 0; Index < ItemNum; ++Index)
+			// shrinking only keeps the items that fit, so the new array is never written past its end
+			for (SizeT Index = 0; Index < ItemNum && Index < NewSize; ++Index)
 			{
 				NewDataPtr[Index] = DataPtr[Index];
 			}

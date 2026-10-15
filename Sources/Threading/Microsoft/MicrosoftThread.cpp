@@ -35,10 +35,14 @@ void CMicrosoftThread::StartInternal(const TFunction<void(const CThreadWeakObjec
 	{
 		Thread = MakeShared<std::thread>([this, ThreadFunc]
 		{
+			ThreadStart(this);
+
 			while (IsRunning())
 			{
 				ThreadFunc(this);
 			}
+
+			ThreadEnd();
 		});
 
 		if (!_name.IsEmpty())

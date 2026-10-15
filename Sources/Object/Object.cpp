@@ -8,6 +8,13 @@ CObject::CObject()
     GObjectCollector.WatchObject(this);
 }
 
+CObject::~CObject()
+{
+    // the collector only knows about the objects it watches, so a destroyed object has to leave the
+    // watch lists, otherwise a later collection pass would still reach it and touch freed memory
+    GObjectCollector.UnWatchObject(this);
+}
+
 bool CObject::IsRooted() const
 {
     SScopeLock Lock(_criticalSection);

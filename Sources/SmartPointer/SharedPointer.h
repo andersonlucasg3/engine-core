@@ -213,13 +213,17 @@ private:
 
 		_refCounter->ReleaseStrong();
 
+		// deleting the object releases the object's own weak reference, and that release is the one
+		// that deletes the counter when it is the last weak reference, so it has to be decided here
+		bool bDeleteRefCounter = _refCounter->IsPendingDelete();
+
 		if (!_refCounter->IsValid() && _deleter != nullptr)
 		{
 			_deleter->Delete();
 			delete _deleter;
 		}
 
-		if (_refCounter->IsPendingDelete())
+		if (bDeleteRefCounter)
 		{
 			delete _refCounter;
 		}
