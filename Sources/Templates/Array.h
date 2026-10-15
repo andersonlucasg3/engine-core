@@ -27,6 +27,9 @@ struct SArrayDeleter : public TDeleter<TElement>
 template<typename TElement>
 class TArray
 {
+	template<typename TOtherElement>
+	friend class TArray;
+
 	using ArrayType = TSharedPtr<TElement>;
 	using ArrayDeleter = SArrayDeleter<TElement>;
 
