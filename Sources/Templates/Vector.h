@@ -133,7 +133,7 @@ struct TVector
         }
         else
         {
-            CLogger::Fatal("Dot product is not defined for vectors with size {}", Size);
+            GLogger.Fatal("Dot product is not defined for vectors with size {}", Size);
         }
     }
     

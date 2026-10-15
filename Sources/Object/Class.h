@@ -19,7 +19,11 @@ public:
     CClass() = default;
     virtual ~CClass() = default;
 
-    
+    template<typename TObject, typename ... TArgs>
+    TObject* CreateRaw(TArgs ... Args)
+    {
+        return new TObject(std::forward<TArgs>(Args)...);
+    }
 };
 
 template<class TObject = CObject>

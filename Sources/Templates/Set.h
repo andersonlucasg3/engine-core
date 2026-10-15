@@ -139,6 +139,18 @@ protected:
         return Hashable.Hash() % _buckets.Num();
     }
 
+    template<typename TFirst, typename TSecond>
+    SizeT Hash(const std::pair<TFirst, TSecond>& Hashable)
+	{
+		return (Hash(Hashable.first) * 31 + Hash(Hashable.second)) % _buckets.Num();
+	}
+
+	template<typename TPointer>
+	SizeT Hash(const TSharedPtr<TPointer>& Hashable)
+	{
+		return reinterpret_cast<SizeT>(Hashable.Raw()) % _buckets.Num();
+	}
+
 private:
     TArray<TBucket> _buckets;
     SizeT _size = 0;

@@ -131,13 +131,13 @@ public:
     // TODO: strip this code in case of non-debug build
     CString ToString() const
     {
-        CString MatrixString = CEnvironment::NewLine();
+        CString MatrixString = GEnvironment.NewLine();
         MatrixString += "{";
         for (UInt32 VectorIndex = 0; VectorIndex < Size; VectorIndex++)
         {
             const TVector& Vector = Matrix[VectorIndex];
 
-            MatrixString += CEnvironment::NewLine();
+            MatrixString += GEnvironment.NewLine();
             MatrixString += "\t{";
             for (UInt32 Index = 0; Index < Size; Index++)
             {
@@ -155,7 +155,7 @@ public:
                 MatrixString += ",";
             }
         }
-        MatrixString += CEnvironment::NewLine();
+        MatrixString += GEnvironment.NewLine();
         return MatrixString += "}";
     }
 

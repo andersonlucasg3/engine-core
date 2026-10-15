@@ -8,4 +8,4 @@ public:
 	CORE_API virtual const char* NewLine() const = 0;
 };
 
-extern const CEnvironment& GEnvironment;
+CORE_API extern const CEnvironment& GEnvironment;
